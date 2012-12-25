@@ -1,3 +1,4 @@
-*.h
-*.json
-*.m
+.DS_Store
+
+suite/BBU*
+suite/test
