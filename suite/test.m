@@ -11,8 +11,9 @@ int main(int argc, char** argv) {
         NSLog(@"Error: %@", error.localizedDescription);
         return 1;
     }
+
+    BBUPost* post = [[BBUPost alloc] initWithDictionary:json];
+    printf("%s\n", [[post description] UTF8String]);
     
-    NSLog(@"JSON: %@", json);
-    
-	return 0;
+    return 0;
 }
