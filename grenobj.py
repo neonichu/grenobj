@@ -1,13 +1,18 @@
 #!/usr/bin/env python
 
+import ConfigParser
 import datetime
 import dateutil.parser
 import json
+import os
 import sys
 import urlparse
 
-AUTHOR = 'Boris Buegling'
-PREFIX = 'BBU'
+config = ConfigParser.ConfigParser()
+config.read(os.path.expandvars('$HOME/.grenobj'))
+
+AUTHOR = config.get('grenobj', 'author')
+PREFIX = config.get('grenobj', 'prefix')
 
 ############################################################################################
 

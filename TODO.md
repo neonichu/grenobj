@@ -1,8 +1,3 @@
-# Configuration #
-
-* Author name
-* Class prefix
-
 # Generation #
 
 ## Headers ##
@@ -16,3 +11,6 @@
 * NSCopying
 
 # Issues #
+
+* Fix indentation (tabs vs. spaces)
+* Testsuite needs BBU prefix
