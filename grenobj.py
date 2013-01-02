@@ -267,4 +267,11 @@ def member_for_key(key):
 ############################################################################################
 
 if __name__ == '__main__':
-    grenobj('posts.json', 'Post')
+    if len(sys.argv) < 2:
+        print '%s: [JSON file] [name of root class]' % sys.argv[0]
+        sys.exit(1)
+
+    try:
+        grenobj(sys.argv[1], sys.argv[2])
+    except Exception, e:
+        print e

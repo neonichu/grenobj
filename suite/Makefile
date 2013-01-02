@@ -12,7 +12,7 @@ clean:
 	rm -f *.o test tmp.json
 
 %.h: ../grenobj.py
-	@$<
+	@$< posts.json Post
 
 BBUAuthor.m: BBUAuthor.h
 BBUPost.m: BBUPost.h
