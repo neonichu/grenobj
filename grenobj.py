@@ -250,7 +250,9 @@ class ObjectiveC_ImplGenerator(ObjectiveC_Generator):
         self.produceDate(key, value)
 
     def produceURL(self, key, value):
-        self.produceDate(key, value)
+        self.writeline("""\t\tNSString* %s = dictionary[@"%s"];
+\t\t_%s = %s ? [NSURL URLWithString:%s] : nil;""" \
+            % (key, key, key, key, member_for_key(key)))
 
 ############################################################################################
 
