@@ -16,8 +16,9 @@ PREFIX = config.get('grenobj', 'prefix')
 
 ############################################################################################
 
+
 class CodeGenerator:
-    def __init__(self, inputDict, output = sys.stdout):
+    def __init__(self, inputDict, output=sys.stdout):
         self.inputDict = inputDict
         self.output = output
 
@@ -76,6 +77,7 @@ class CodeGenerator:
 
 ############################################################################################
 
+
 class NullCodeGenerator(CodeGenerator):
     def produceDate(self, key, value):
         pass
@@ -94,19 +96,21 @@ class NullCodeGenerator(CodeGenerator):
 
 ############################################################################################
 
+
 class ObjectiveC_ForwardGenerator(NullCodeGenerator):
     def produceObject(self, key, value):
         self.writeline("@class %s%s;" % (PREFIX, key.capitalize()))
 
 ############################################################################################
 
+
 class ObjectiveC_Generator(CodeGenerator):
     def __init__(self, name, inputDict, extension):
         self.extension = extension
         self.name = '%s%s' % (PREFIX, name)
 
-        CodeGenerator.__init__(self, inputDict, 
-            output = open('%s.%s' % (self.name, self.extension), 'w'))
+        CodeGenerator.__init__(self, inputDict,
+            output=open('%s.%s' % (self.name, self.extension), 'w'))
 
     def generateHeader(self):
         today = datetime.date.today()
@@ -119,6 +123,7 @@ class ObjectiveC_Generator(CodeGenerator):
 //""" % (self.name, self.extension, AUTHOR, today, today.year, AUTHOR))
 
 ############################################################################################
+
 
 class ObjectiveC_HeaderGenerator(ObjectiveC_Generator):
     def __init__(self, name, inputDict):
@@ -144,23 +149,23 @@ class ObjectiveC_HeaderGenerator(ObjectiveC_Generator):
 
     def propertyDeclaration(self):
         return '@property (readonly)'
-        
+
     def produceDate(self, key, value):
         self.writeline('%s NSDate* %s;' % (self.propertyDeclaration(), member_for_key(key)))
 
     def produceNumber(self, key, value):
-        self.writeline('%s NSNumber* %s;' % (self.propertyDeclaration(), 
+        self.writeline('%s NSNumber* %s;' % (self.propertyDeclaration(),
             member_for_key(key)))
 
     def produceObject(self, key, value):
         sub_object = self.__class__(key.capitalize(), value)
         sub_object.generate()
 
-        self.writeline('%s %s* %s;' % (self.propertyDeclaration(), sub_object.name, 
+        self.writeline('%s %s* %s;' % (self.propertyDeclaration(), sub_object.name,
             member_for_key(key)))
 
     def produceString(self, key, value):
-        self.writeline('%s NSString* %s;' % (self.propertyDeclaration(), 
+        self.writeline('%s NSString* %s;' % (self.propertyDeclaration(),
             member_for_key(key)))
 
     def produceURL(self, key, value):
@@ -168,11 +173,13 @@ class ObjectiveC_HeaderGenerator(ObjectiveC_Generator):
 
 ############################################################################################
 
+
 class ObjectiveC_ImportGenerator(NullCodeGenerator):
     def produceObject(self, key, value):
         self.writeline('#import "%s%s.h"' % (PREFIX, key.capitalize()))
 
 ############################################################################################
+
 
 class ObjectiveC_ExternalRepGenerator(NullCodeGenerator):
     def produceDate(self, key, value):
@@ -192,6 +199,7 @@ class ObjectiveC_ExternalRepGenerator(NullCodeGenerator):
         self.produceDate(key, value)
 
 ############################################################################################
+
 
 class ObjectiveC_ImplGenerator(ObjectiveC_Generator):
     def __init__(self, name, inputDict):
@@ -260,10 +268,12 @@ class ObjectiveC_ImplGenerator(ObjectiveC_Generator):
 
 ############################################################################################
 
+
 def grenobj(json_file, root_class_name):
     obj = json.loads(open(json_file).read())
     ObjectiveC_HeaderGenerator(root_class_name, obj).generate()
     ObjectiveC_ImplGenerator(root_class_name, obj).generate()
+
 
 def member_for_key(key):
     if key == 'description':
