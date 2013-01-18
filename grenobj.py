@@ -27,6 +27,10 @@ class CodeGenerator:
                 self.produceObject(key, value)
                 continue
 
+            # Lists are ignored for now
+            if type(value) == list:
+                continue
+
             try:
                 int(value)
                 self.produceNumber(key, value)
