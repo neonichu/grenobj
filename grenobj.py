@@ -196,7 +196,8 @@ class ObjectiveC_ImplGenerator(ObjectiveC_Generator):
     def generate(self):
         self.generateHeader()
 
-        self.writeline('\n#import "%s.h"' % self.name)
+        self.writeline('\n#import "ISO8601DateFormatter.h"')
+        self.writeline('#import "%s.h"' % self.name)
 
         ObjectiveC_ImportGenerator(self.inputDict, self.output).generate()
 
@@ -234,10 +235,11 @@ class ObjectiveC_ImplGenerator(ObjectiveC_Generator):
 @end""")
 
     def produceDate(self, key, value):
-        self.writeline('\t\t_%s = dictionary[@"%s"];' % (member_for_key(key), key))
+        self.writeline('\t\t_%s = [[ISO8601DateFormatter new] dateFromString:'
+            'dictionary[@"%s"]];' % (member_for_key(key), key))
 
     def produceNumber(self, key, value):
-        self.produceDate(key, value)
+        self.writeline('\t\t_%s = dictionary[@"%s"];' % (member_for_key(key), key))
 
     def produceObject(self, key, value):
         sub_object = self.__class__(key.capitalize(), value)
@@ -247,7 +249,7 @@ class ObjectiveC_ImplGenerator(ObjectiveC_Generator):
             % (member_for_key(key), sub_object.name, key))
 
     def produceString(self, key, value):
-        self.produceDate(key, value)
+        self.produceNumber(key, value)
 
     def produceURL(self, key, value):
         self.writeline("""\t\tNSString* %s = dictionary[@"%s"];
